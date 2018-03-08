@@ -17,8 +17,9 @@
 
 An example is shown in the demo.
 The subdirectory of "basepath"(which is used in "DOTA.py", "ImgSplit.py") is in the structure of
+```
 .
 ├── images
 └── labelTxt
-
+```
 
