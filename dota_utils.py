@@ -132,7 +132,7 @@ def dots2ToRec8(rec):
     xmin, ymin, xmax, ymax = rec[0], rec[1], rec[2], rec[3]
     return xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax
 
-def groundtruth2Task2(srcpath, dstpath):
+def groundtruth2Task1(srcpath, dstpath):
     filelist = GetFileFromThisRootDir(srcpath)
     # names = [custombasename(x.strip())for x in filelist]
     filedict = {}
@@ -174,7 +174,7 @@ def Task2groundtruth_poly(srcpath, dstpath):
         for line in lines:
             if len(line) == 0:
                 continue
-            print('line:', line)
+            # print('line:', line)
             splitline = line.strip().split(' ')
             filename = splitline[0]
             confidence = splitline[1]
@@ -186,7 +186,7 @@ def Task2groundtruth_poly(srcpath, dstpath):
                 # poly = util.dots2ToRec8(bbox)
                 poly = bbox
                 #               filedict[filename].write(' '.join(poly) + ' ' + idname + '_' + str(round(float(confidence), 2)) + '\n')
-            print('idname:', idname)
+            # print('idname:', idname)
 
             # filedict[filename].write(' '.join(poly) + ' ' + idname + '_' + str(round(float(confidence), 2)) + '\n')
 
