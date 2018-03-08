@@ -1,3 +1,5 @@
+The code is useful for <a href="http://captain.whu.edu.cn/DOTAweb/">DOTA<a> or
+<a href="http://captain.whu.edu.cn/ODAI/">ODAI<a>.
 ### Installation
 1. install swig
 ```
