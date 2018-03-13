@@ -4,6 +4,7 @@ import numpy as np
 import shapely.geometry as shgeo
 import os
 import re
+import math
 import polyiou
 """
     some basic functions which are useful for process DOTA data
@@ -191,3 +192,37 @@ def Task2groundtruth_poly(srcpath, dstpath):
             # filedict[filename].write(' '.join(poly) + ' ' + idname + '_' + str(round(float(confidence), 2)) + '\n')
 
             filedict[filename].write(' '.join(poly) + ' ' + idname + '\n')
+
+
+def polygonToRotRectangle(bbox):
+    """
+    :param bbox: The polygon stored in format [x1, y1, x2, y2, x3, y3, x4, y4]
+    :return: Rotated Rectangle in format [cx, cy, w, h, theta]
+    """
+    bbox = np.array(bbox,dtype=np.float32)
+    bbox = np.reshape(bbox,newshape=(2,4),order='F')
+    angle = math.atan2(-(bbox[0,1]-bbox[0,0]),bbox[1,1]-bbox[1,0])
+
+    center = [[0],[0]]
+
+    for i in range(4):
+        center[0] += bbox[0,i]
+        center[1] += bbox[1,i]
+
+    center = np.array(center,dtype=np.float32)/4.0
+
+    R = np.array([[math.cos(angle), -math.sin(angle)], [math.sin(angle), math.cos(angle)]], dtype=np.float32)
+
+    normalized = np.matmul(R.transpose(),bbox-center)
+
+    xmin = np.min(normalized[0,:])
+    xmax = np.max(normalized[0,:])
+    ymin = np.min(normalized[1,:])
+    ymax = np.max(normalized[1,:])
+
+    w = xmax - xmin + 1
+    h = ymax - ymin + 1
+
+    return [float(center[0]),float(center[1]),w,h,angle]
+
+
