@@ -225,16 +225,6 @@ class splitbase():
             else:
                 left = left + self.slide
 
-    # def splitdata_half(self, imgenames):
-    #      for name in imgenames:
-    #          self.SplitSingle(name, 0.5, self.ext)
-    # def splitdata(self, imgenames):
-    #      for name in imgenames:
-    #          self.SplitSingle(name, 1, self.ext)
-    # def splitdata_2(self, imagenames):
-    #     for name in imagenames:
-    #         self.SplitSingle(name, 2, self.ext)
-
     def splitdata(self, rate):
         """
         :param rate: resize rate before cut
