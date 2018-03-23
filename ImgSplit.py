@@ -66,6 +66,10 @@ class splitbase():
         self.outlabelpath = os.path.join(self.outpath, 'labelTxt')
         self.choosebestpoint = choosebestpoint
         self.ext = ext
+        if not os.path.exists(self.outimagepath):
+            os.makedirs(self.outimagepath)
+        if not os.path.exists(self.outlabelpath):
+            os.makedirs(self.outlabelpath)
 
     ## point: (x, y), rec: (xmin, ymin, xmax, ymax)
     # def __del__(self):
