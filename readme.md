@@ -2,7 +2,7 @@ The code is useful for <a href="http://captain.whu.edu.cn/DOTAweb/">DOTA<a> or
 <a href="http://captain.whu.edu.cn/ODAI/">ODAI<a>. The code provide the following function
 <ul>
     <li>
-        Load and visulize the data.
+        Load and image, and show the bounding box on it.
     </li>
     <li>
         Evaluate the result.
