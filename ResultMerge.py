@@ -163,5 +163,6 @@ def mergebypoly(srcpath, dstpath):
               dstpath,
               py_cpu_nms_poly)
 if __name__ == '__main__':
-    mergebypoly()
+    # see demo for example
+    mergebypoly(r'path_to_configure', r'path_to_configure')
     # mergebyrec()
