@@ -1,3 +1,13 @@
+
+<h2> 
+Update
+</h2>
+
+<p>
+    We now add the cpu multi process version of "ImgSplit" and "ResultMerge", gpu version of polygon nms.
+</p>
+
+
 The code is useful for <a href="http://captain.whu.edu.cn/DOTAweb/">DOTA<a> or
 <a href="http://captain.whu.edu.cn/ODAI/">ODAI<a>. The code provide the following function
 <ul>
@@ -39,10 +49,10 @@ ODAI is a contest of object detetion in aerial images on <a href"http://www.icpr
 ```
 
 ### Usage
-1. For read and visualize data, you can use DOTA.py
-2. For evaluation the result, you can refer to the "dota_evaluation_task1.py" and "dota_evaluation_task2.py"
-3. For split the large image, you can refer to the "ImgSplit"
-4. For merge the results detected on the patches, you can refer to the ResultMerge.py
+1. Reading and visualizing data, you can use DOTA.py
+2. Evaluating the result, you can refer to the "dota_evaluation_task1.py" and "dota_evaluation_task2.py"
+3. Split the large image, you can refer to the "ImgSplit"
+4. Merging the results detected on the patches, you can refer to the ResultMerge.py
 
 An example is shown in the demo.
 The subdirectory of "basepath"(which is used in "DOTA.py", "ImgSplit.py") is in the structure of
