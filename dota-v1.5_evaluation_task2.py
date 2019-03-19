@@ -24,11 +24,11 @@ def parse_gt(filename):
         for splitline in splitlines:
             object_struct = {}
             object_struct['name'] = splitline[8]
-            if (len(splitline) == 9):
-                object_struct['difficult'] = 0
-            elif (len(splitline) == 10):
-                object_struct['difficult'] = int(splitline[9])
-            # object_struct['difficult'] = 0
+            # if (len(splitline) == 9):
+            #     object_struct['difficult'] = 0
+            # elif (len(splitline) == 10):
+            #     object_struct['difficult'] = int(splitline[9])
+            object_struct['difficult'] = 0
             object_struct['bbox'] = [int(float(splitline[0])),
                                          int(float(splitline[1])),
                                          int(float(splitline[4])),
@@ -229,16 +229,19 @@ def voc_eval(detpath,
     return rec, prec, ap
 
 def main():
-    # detpath = r'E:\documentation\OneDrive\documentation\DotaEvaluation\evluation_task2\evluation_task2\faster-rcnn-nms_0.3_task2\nms_0.3_task\Task2_{:s}.txt'
-    # annopath = r'I:\dota\testset\ReclabelTxt-utf-8\{:s}.txt'
-    # imagesetfile = r'I:\dota\testset\va.txt'
+    # detpath = r'/home/dingjian/data/DOTA-v1.5/example/RoITransTask2/Task2_{:s}.txt'
+    # annopath = r'/home/dingjian/code/DOAI_server2/media/DOTA15_Task2_gt/{:s}.txt'
+    # imagesetfile = r'/home/dingjian/code/DOAI_server2/media/testset.txt'
 
     detpath = r'PATH_TO_BE_CONFIGURED/Task2_{:s}.txt'
     annopath = r'PATH_TO_BE_CONFIGURED/{:s}.txt'# change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
     imagesetfile = r'PATH_TO_BE_CONFIGURED/valset.txt'
-
+    # For DOTA v1.5
     classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
-                'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter']
+                'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter', 'container-crane']
+    # For DOTA v1.0
+    # classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
+    #             'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter']
     classaps = []
     map = 0
     for classname in classnames:

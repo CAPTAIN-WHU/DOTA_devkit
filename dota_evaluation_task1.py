@@ -12,11 +12,11 @@
 """
 import xml.etree.ElementTree as ET
 import os
-#TODO: test the cache
 #import cPickle
 import numpy as np
 import matplotlib.pyplot as plt
 import polyiou
+from functools import partial
 
 def parse_gt(filename):
     """
@@ -196,17 +196,50 @@ def voc_eval(detpath,
             # compute overlaps
             # intersection
 
-            def calcoverlaps(BBGT, bb):
-                overlaps = []
-                for index, GT in enumerate(BBGT):
+            # 1. calculate the overlaps between hbbs, if the iou between hbbs are 0, the iou between obbs are 0, too.
+            # pdb.set_trace()
+            BBGT_xmin =  np.min(BBGT[:, 0::2], axis=1)
+            BBGT_ymin = np.min(BBGT[:, 1::2], axis=1)
+            BBGT_xmax = np.max(BBGT[:, 0::2], axis=1)
+            BBGT_ymax = np.max(BBGT[:, 1::2], axis=1)
+            bb_xmin = np.min(bb[0::2])
+            bb_ymin = np.min(bb[1::2])
+            bb_xmax = np.max(bb[0::2])
+            bb_ymax = np.max(bb[1::2])
 
-                    overlap = polyiou.iou_poly(polyiou.VectorDouble(BBGT[index]), polyiou.VectorDouble(bb))
+            ixmin = np.maximum(BBGT_xmin, bb_xmin)
+            iymin = np.maximum(BBGT_ymin, bb_ymin)
+            ixmax = np.minimum(BBGT_xmax, bb_xmax)
+            iymax = np.minimum(BBGT_ymax, bb_ymax)
+            iw = np.maximum(ixmax - ixmin + 1., 0.)
+            ih = np.maximum(iymax - iymin + 1., 0.)
+            inters = iw * ih
+
+            # union
+            uni = ((bb_xmax - bb_xmin + 1.) * (bb_ymax - bb_ymin + 1.) +
+                   (BBGT_xmax - BBGT_xmin + 1.) *
+                   (BBGT_ymax - BBGT_ymin + 1.) - inters)
+
+            overlaps = inters / uni
+
+            BBGT_keep_mask = overlaps > 0
+            BBGT_keep = BBGT[BBGT_keep_mask, :]
+            BBGT_keep_index = np.where(overlaps > 0)[0]
+            # pdb.set_trace()
+            def calcoverlaps(BBGT_keep, bb):
+                overlaps = []
+                for index, GT in enumerate(BBGT_keep):
+
+                    overlap = polyiou.iou_poly(polyiou.VectorDouble(BBGT_keep[index]), polyiou.VectorDouble(bb))
                     overlaps.append(overlap)
                 return overlaps
-            overlaps = calcoverlaps(BBGT, bb)
+            if len(BBGT_keep) > 0:
+                overlaps = calcoverlaps(BBGT_keep, bb)
 
-            ovmax = np.max(overlaps)
-            jmax = np.argmax(overlaps)
+                ovmax = np.max(overlaps)
+                jmax = np.argmax(overlaps)
+                # pdb.set_trace()
+                jmax = BBGT_keep_index[jmax]
 
         if ovmax > ovthresh:
             if not R['difficult'][jmax]:
@@ -239,19 +272,22 @@ def voc_eval(detpath,
 def main():
 
     # ##TODO: wrap the code in the main
-    # detpath = r'/home/dingjian/evaluation_task1/result/faster-rcnn-59/comp4_testnms_c_extension_0.1/comp4_det_test_{:s}.txt'
-    # annopath = r'/home/dingjian/evaluation_task1/testset/wordlabel-utf-8/{:s}.txt'
-    # imagesetfile = r'/home/dingjian/evaluation_task1/testset/testset.txt'
+    # detpath = r'/home/dingjian/Documents/Research/experiments/light_head_faster_rotbox_best_point/Task1_results_0.1_nms_epoch18/results/Task1_{:s}.txt'
+    # annopath = r'/home/dingjian/code/DOTA/DOTA/media/OrientlabelTxt-utf-8/{:s}.txt'# change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
+    # imagesetfile = r'/home/dingjian/code/DOTA/DOTA/media/testset.txt'
     # classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
-    #             'basketball-court', 'storage-tank',  'soccer-ball-field', 'turntable', 'harbor', 'swimming-pool', 'helicopter']
+    #             'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter']
 
     detpath = r'PATH_TO_BE_CONFIGURED/Task1_{:s}.txt'
     annopath = r'PATH_TO_BE_CONFIGURED/{:s}.txt' # change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
     imagesetfile = r'PATH_TO_BE_CONFIGURED/valset.txt'
 
+    # For DOTA-v1.5
+    # classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
+    #             'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter', 'container-crane']
+    # For DOTA-v1.0
     classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
                 'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter']
-
     classaps = []
     map = 0
     for classname in classnames:
