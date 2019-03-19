@@ -1,6 +1,7 @@
 
 ## Update
 
+
 <p>
     We now add the cpu multi process version of "ImgSplit" and "ResultMerge", gpu version of polygon nms.
 </p>
@@ -53,7 +54,7 @@ For the detail of <strong style="color:blue"> DOTA-v1.0</strong>, you can refer 
 
 ### Usage
 1. Reading and visualizing data, you can use DOTA.py
-2. Evaluating the result, you can refer to the "dota_evaluation_task1.py" and "dota_evaluation_task2.py"
+2. Evaluating the result, you can refer to the "dota_evaluation_task1.py" and "dota_evaluation_task2.py" (or "dota-v1.5_evaluation_task1.py" and "dota-v1.5_evaluation_task2.py" for DOTA-v1.5)
 3. Split the large image, you can refer to the "ImgSplit"
 4. Merging the results detected on the patches, you can refer to the ResultMerge.py
 
