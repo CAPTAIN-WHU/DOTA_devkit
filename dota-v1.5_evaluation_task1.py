@@ -261,13 +261,13 @@ def voc_eval(detpath,
 
 def main():
 
-    # detpath = r'/home/dingjian/data/DOTA-v1.5/example/RoITrans/Task1_{:s}.txt'
-    # annopath = r'/home/dingjian/code/DOAI_server2/media/DOTA15_Task1_gt/{:s}.txt'
-    # imagesetfile = r'/home/dingjian/code/DOAI_server2/media/testset.txt'
+    detpath = r'/home/dingjian/data/DOTA-v1.5/example/RoITrans/Task1_{:s}.txt'
+    annopath = r'/home/dingjian/code/DOAI_server2/media/DOTA15_Task1_gt/{:s}.txt'
+    imagesetfile = r'/home/dingjian/code/DOAI_server2/media/testset.txt'
 
-    detpath = r'PATH_TO_BE_CONFIGURED/Task1_{:s}.txt'
-    annopath = r'PATH_TO_BE_CONFIGURED/{:s}.txt' # change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
-    imagesetfile = r'PATH_TO_BE_CONFIGURED/valset.txt'
+    # detpath = r'PATH_TO_BE_CONFIGURED/Task1_{:s}.txt'
+    # annopath = r'PATH_TO_BE_CONFIGURED/{:s}.txt' # change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
+    # imagesetfile = r'PATH_TO_BE_CONFIGURED/valset.txt'
 
     # For DOTA-v1.5
     classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',

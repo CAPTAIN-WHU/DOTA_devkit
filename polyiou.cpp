@@ -5,7 +5,7 @@
 #include<cmath>
 #include <vector>
 using namespace std;
-#define maxn 510
+#define maxn 51
 const double eps=1E-8;
 int sig(double d){
     return(d>eps)-(d<-eps);
@@ -41,8 +41,22 @@ int lineCross(Point a,Point b,Point c,Point d,Point&p){
 //多边形切割
 //用直线ab切割多边形p，切割后的在向量(a,b)的左侧，并原地保存切割结果
 //如果退化为一个点，也会返回去,此时n为1
-void polygon_cut(Point*p,int&n,Point a,Point b){
-    static Point pp[maxn];
+//void polygon_cut(Point*p,int&n,Point a,Point b){
+//    static Point pp[maxn];
+//    int m=0;p[n]=p[0];
+//    for(int i=0;i<n;i++){
+//        if(sig(cross(a,b,p[i]))>0) pp[m++]=p[i];
+//        if(sig(cross(a,b,p[i]))!=sig(cross(a,b,p[i+1])))
+//            lineCross(a,b,p[i],p[i+1],pp[m++]);
+//    }
+//    n=0;
+//    for(int i=0;i<m;i++)
+//        if(!i||!(pp[i]==pp[i-1]))
+//            p[n++]=pp[i];
+//    while(n>1&&p[n-1]==p[0])n--;
+//}
+void polygon_cut(Point*p,int&n,Point a,Point b, Point* pp){
+//    static Point pp[maxn];
     int m=0;p[n]=p[0];
     for(int i=0;i<n;i++){
         if(sig(cross(a,b,p[i]))>0) pp[m++]=p[i];
@@ -66,9 +80,10 @@ double intersectArea(Point a,Point b,Point c,Point d){
     if(s2==-1) swap(c,d);
     Point p[10]={o,a,b};
     int n=3;
-    polygon_cut(p,n,o,c);
-    polygon_cut(p,n,c,d);
-    polygon_cut(p,n,d,o);
+    Point pp[maxn];
+    polygon_cut(p,n,o,c, pp);
+    polygon_cut(p,n,c,d, pp);
+    polygon_cut(p,n,d,o, pp);
     double res=fabs(area(p,n));
     if(s1*s2==-1) res=-res;return res;
 }

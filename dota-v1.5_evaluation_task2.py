@@ -229,13 +229,13 @@ def voc_eval(detpath,
     return rec, prec, ap
 
 def main():
-    # detpath = r'/home/dingjian/data/DOTA-v1.5/example/RoITransTask2/Task2_{:s}.txt'
-    # annopath = r'/home/dingjian/code/DOAI_server2/media/DOTA15_Task2_gt/{:s}.txt'
-    # imagesetfile = r'/home/dingjian/code/DOAI_server2/media/testset.txt'
+    detpath = r'/home/dingjian/Documents/ODAI_DOTA/DOAI_2019/doai2019_submit/gwf_Task2_merge_2/Task2_{:s}.txt'
+    annopath = r'/home/dingjian/code/DOAI_server2/media/DOTA15_Task2_gt/{:s}.txt'
+    imagesetfile = r'/home/dingjian/code/DOAI_server2/media/testset.txt'
 
-    detpath = r'PATH_TO_BE_CONFIGURED/Task2_{:s}.txt'
-    annopath = r'PATH_TO_BE_CONFIGURED/{:s}.txt'# change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
-    imagesetfile = r'PATH_TO_BE_CONFIGURED/valset.txt'
+    # detpath = r'PATH_TO_BE_CONFIGURED/Task2_{:s}.txt'
+    # annopath = r'PATH_TO_BE_CONFIGURED/{:s}.txt'# change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
+    # imagesetfile = r'PATH_TO_BE_CONFIGURED/valset.txt'
     # For DOTA v1.5
     classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
                 'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter', 'container-crane']
