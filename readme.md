@@ -34,7 +34,7 @@ For the detail of <strong style="color:blue"> DOTA-v1.0</strong>, you can refer 
 
 ### What is DOAI?
 
-[DOAI2019](https://captain-whu.github.io/DOAI2019) is a contest of Detecting Objects in Aerial Images on [CVPR'2019]("http://cvpr2019.thecvf.com/"). It is based on DOTA-v2 (Coming soon).
+[DOAI2019](https://captain-whu.github.io/DOAI2019) is a contest of Detecting Objects in Aerial Images on [CVPR'2019]("http://cvpr2019.thecvf.com/"). It is based on DOTA-v1.5.
 
 
 

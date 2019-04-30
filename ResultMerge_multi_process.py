@@ -59,6 +59,61 @@ def py_cpu_nms_poly(dets, thresh):
 
     return keep
 
+def py_cpu_nms_poly_fast(dets, thresh, h_thresh):
+    # TODO: test it
+    obbs = dets[:, 0:-1]
+    x1 = np.min(obbs[:, 0::2], axis=1)
+    y1 = np.min(obbs[:, 1::2], axis=1)
+    x2 = np.max(obbs[:, 0::2], axis=1)
+    y2 = np.max(obbs[:, 1::2], axis=1)
+    scores = dets[:, 8]
+    areas = (x2 - x1 + 1) * (y2 - y1 + 1)
+
+    polys = []
+    areas = []
+    for i in range(len(dets)):
+        tm_polygon = polyiou.VectorDouble([dets[i][0], dets[i][1],
+                                            dets[i][2], dets[i][3],
+                                            dets[i][4], dets[i][5],
+                                            dets[i][6], dets[i][7]])
+        polys.append(tm_polygon)
+    order = scores.argsort()[::-1]
+
+    keep = []
+    while order.size > 0:
+        ovr = []
+        i = order[0]
+        keep.append(i)
+        xx1 = np.maximum(x1[i], x1[order[1:]])
+        yy1 = np.maximum(y1[i], y1[order[1:]])
+        xx2 = np.minimum(x2[i], x2[order[1:]])
+        yy2 = np.minimum(y2[i], y2[order[1:]])
+
+        w = np.maximum(0.0, xx2 - xx1 + 1)
+        h = np.maximum(0.0, yy2 - yy1 + 1)
+        hbb_inter = w * h
+        hbb_ovr = hbb_inter / (areas[i] + areas[order[1:]] - hbb_inter)
+        h_inds = np.where(hbb_ovr <= h_thresh)[0]
+        tmp_order = order[h_inds + 1]
+        for j in range(tmp_order.size):
+            iou = polyiou.iou_poly(polys[i], polys[order[j]])
+            ovr.append(iou)
+        ovr = np.array(ovr)
+
+        # print('ovr: ', ovr)
+        # print('thresh: ', thresh)
+        try:
+            if math.isnan(ovr[0]):
+                pdb.set_trace()
+        except:
+            pass
+        inds = np.where(ovr <= thresh)[0]
+        # print('inds: ', inds)
+
+        order = order[inds + 1]
+
+    return keep
+
 def py_cpu_nms(dets, thresh):
     """Pure Python NMS baseline."""
     #print('dets:', dets)
