@@ -6,6 +6,9 @@ import dota_utils as util
 from multiprocessing import Pool
 from functools import partial
 
+
+def split_single_warp(name, split_base, rate, extent):
+    split_base.SplitSingle(name, rate, extent)
 class splitbase():
     def __init__(self,
                  srcpath,
@@ -53,6 +56,9 @@ class splitbase():
         weight = np.shape(resizeimg)[1]
         height = np.shape(resizeimg)[0]
 
+        # if (max(weight, height) < self.subsize/2):
+        #     return
+
         left, up = 0, 0
         while (left < weight):
             if (left + self.subsize >= weight):
@@ -77,8 +83,8 @@ class splitbase():
         imagelist = util.GetFileFromThisRootDir(self.srcpath)
         imagenames = [util.custombasename(x) for x in imagelist if (util.custombasename(x) != 'Thumbs')]
 
-        worker = partial(self.SplitSingle, rate=rate, extent=self.ext)
-
+        # worker = partial(self.SplitSingle, rate=rate, extent=self.ext)
+        worker = partial(split_single_warp, split_base=self, rate=rate, extent=self.ext)
         self.pool.map(worker, imagenames)
         #
         # for name in imagenames:

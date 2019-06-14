@@ -38,6 +38,8 @@ def cal_line_length(point1, point2):
     return math.sqrt( math.pow(point1[0] - point2[0], 2) + math.pow(point1[1] - point2[1], 2))
 
 
+def split_single_warp(name, split_base, rate, extent):
+    split_base.SplitSingle(name, rate, extent)
 
 class splitbase():
     def __init__(self,
@@ -78,6 +80,7 @@ class splitbase():
         self.choosebestpoint = choosebestpoint
         self.ext = ext
         self.padding = padding
+        self.num_process = num_process
         self.pool = Pool(num_process)
         print('padding:', padding)
 
@@ -258,15 +261,16 @@ class splitbase():
         """
         :param rate: resize rate before cut
         """
-
         imagelist = GetFileFromThisRootDir(self.imagepath)
         imagenames = [util.custombasename(x) for x in imagelist if (util.custombasename(x) != 'Thumbs')]
+        if self.num_process == 1:
+            for name in imagenames:
+                self.SplitSingle(name, rate, self.ext)
+        else:
 
-        worker = partial(self.SplitSingle, rate=rate, extent=self.ext)
-        #
-        # for name in imagenames:
-        #     self.SplitSingle(name, rate, self.ext)
-        self.pool.map(worker, imagenames)
+            # worker = partial(self.SplitSingle, rate=rate, extent=self.ext)
+            worker = partial(split_single_warp, split_base=self, rate=rate, extent=self.ext)
+            self.pool.map(worker, imagenames)
 
     def __getstate__(self):
         self_dict = self.__dict__.copy()
